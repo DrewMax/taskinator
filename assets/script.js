@@ -281,26 +281,32 @@ var taskStatusChangeHandler = function(event) {
 
   var loadTasks = function() {
       // gets task items from localstorage
-      var tasks = localStorage.getItem("tasks")
-      console.log(tasks)
+      var savedTasks = localStorage.getItem("tasks");
       // converts tasks from the stringified format back into an array of objects
-      if (!tasks) {
+      if (!savedTasks) {
           return false;
       }
-      tasks = JSON.parse(tasks);
+      savedTasks = JSON.parse(savedTasks);
+
+      // loop through savedTasks array
+      for (var i = 0; i < savedTasks.length; i++) {
+          createTaskEl(saveTasks[i])
+      }
+    }
       // iterates through tasks array and creates task elements on the page from it
       for (var i = 0; i < tasks.length; i++) {
           tasks[i].id = taskIdCounter
       
-          var listItemEl = document.createElement("li")
-                listItemEl.classname = "task-item";
-                listItemEl.setAttribute("data-task-id", tasks[i].id)
-                listItemEl.setAttribute("draggable", true) 
+    var listItemEl = document.createElement("li")
+        listItemEl.classname = "task-item";
+        listItemEl.setAttribute("data-task-id", tasks[i].id)
+        listItemEl.setAttribute("draggable", true) 
 
-          var taskInfoEl = document.createElement("div");
-          taskInfoEl.classname = "task-info";
-          taskInfoEl.innerHTML = "<h2 class='task.name'>" + tasks[i].name + "</h3><span class='task-type'>" + tasks[i].type + "</span>"
-            listItemEl.appendChild(taskInfoEl);
+    var taskInfoEl = document.createElement("div");
+        taskInfoEl.classname = "task-info";
+        taskInfoEl.innerHTML = "<h2 class='task.name'>" + tasks[i].name + "</h3><span class='task-type'>" + tasks[i].type + "</span>"
+        listItemEl.appendChild(taskInfoEl);
+        
             if (tasks[i].status = "to-do") {
                 listItemEl.querySelector("select[name='status-change']").selectedIndex = 0;
                tasksToDoEl .appendChild(listItemEl)
@@ -316,7 +322,7 @@ var taskStatusChangeHandler = function(event) {
          tasks.push(tasksLoaded[i]);
          taskIdCounter++
     }
-}
+
   loadTasks();
 
 pageContentEl.addEventListener("dragleave", dragLeaveHandler)
